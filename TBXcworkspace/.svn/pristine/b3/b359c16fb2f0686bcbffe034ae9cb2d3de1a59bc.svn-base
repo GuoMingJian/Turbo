@@ -1,0 +1,175 @@
+//
+//  TBH5BrowserViewController.m
+//  TBBusiness
+//
+//  Created by Apple on 2018/5/19.
+//  Copyright © 2018年 Apple. All rights reserved.
+//
+
+#import "TBH5BrowserViewController.h"
+#import "dsbridge.h"
+#import <WebKit/WebKit.h>
+#import "TBWKWebView.h"
+#import "TBViewControllerManager.h"
+
+@interface TBH5BrowserViewController ()<TBWKWebViewDelegate, UIGestureRecognizerDelegate>
+
+@end
+
+@implementation TBH5BrowserViewController
+
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+}
+
+-(void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    id obj = [[TBViewControllerManager shareInstance].pathDict valueForKey:self.htmlPath];
+    if (obj) {
+        BOOL isShow = [obj boolValue];
+        if (isShow) {
+            self.navigationController.navigationBar.hidden = NO;
+            [self hideNavigationBarShadowLine:YES];
+        } else {
+            self.navigationController.navigationBar.hidden = YES;
+            [self hideNavigationBarShadowLine:NO];
+        }
+    }
+    
+    /**
+     *  根据业务需要
+     *  如果点击左上角返回按钮，只返回上一页的则开启左侧返回手势，否则不启用；
+     */
+    if (self.backPageNum == 1) {
+        self.navigationController.interactivePopGestureRecognizer.enabled = YES;
+        self.navigationController.interactivePopGestureRecognizer.delegate = self;
+    } else {
+        self.navigationController.interactivePopGestureRecognizer.enabled = NO;
+        self.navigationController.interactivePopGestureRecognizer.delegate = nil;
+    }
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+    
+    if (self.isShowNaviBar) {
+        self.navigationController.navigationBar.hidden = NO;
+        [self createLeftItemWithImg:nil];
+    } else {
+        self.navigationController.navigationBar.hidden = YES;
+        [self hideNavigationBarShadowLine:YES];
+        // 隐藏系统返回按钮
+        self.navigationItem.hidesBackButton = YES;
+        // 隐藏自定义返回按钮
+        self.navigationItem.leftBarButtonItem = nil;
+    }
+    
+    // 记录是否显示导航控制器，以便页面pop回来的时候控制导航控制器的显示状态
+    if (self.htmlPath && self.htmlPath.length > 0) {
+        [[TBViewControllerManager shareInstance].pathDict setValue:@(self.isShowNaviBar) forKey:self.htmlPath];
+    }
+    
+    // 1、创建webView
+    if (self.htmlPath && self.htmlPath.length > 0) {
+        [self createWebView];
+    }
+    
+    // 给定默认值
+    if (!self.backPageNum) {
+        self.backPageNum = 1;
+    }
+    
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+}
+
+#pragma mark - 重写父类左上角点击事件
+- (void)leftBtnClick:(UIButton *)btn {
+    // 控制视图控制器出栈，并移除viewControllerArr数组的元素
+    TBViewControllerManager *manager = [TBViewControllerManager shareInstance];
+    [manager popViewControllerWithNavigationController:self.navigationController andAmount:self.backPageNum];
+    [manager removeElements:self.backPageNum];
+}
+
+#pragma mark - 底层函数
+-(void)willMoveToParentViewController:(UIViewController *)parent {
+    
+}
+-(void)didMoveToParentViewController:(UIViewController *)parent {
+    /**
+     *  !parent表示界面已经出栈了
+     *  移除TBViewControllerManager中viewControllerArr数组的元素
+     */
+    if(!parent){
+        TBViewControllerManager *manager = [TBViewControllerManager shareInstance];
+        [manager removeElements:1];
+    }
+}
+
+#pragma mark - 创建webView
+-(void)createWebView {
+    UIViewController *tempViewController;
+    if (self.navigationController) {
+        tempViewController = self.navigationController;
+    } else {
+        tempViewController = self;
+    }
+    
+    /**
+     *  TBH5BrowserViewController属于二级以上界面
+     *  因此比一级界面多出一个TAB_BAR_HEIGHT的操作范围
+     *  如果isShowNaviBar为YES，webViewY为导航控制器的MaxY
+     *  如果isShowNaviBar为NO，webViewY为0
+     */
+    CGFloat webViewX = 0;
+    CGFloat webViewY = self.isShowNaviBar ? (STATUS_BAR_HEIGHT + NAVIGATION_BAR_HEIGHT) : 0;
+    CGFloat webViewW = MAIN_SCREEN_WIDTH;
+    CGFloat webViewH = MAIN_SCREEN_HEIGHT - webViewY;
+    TBWKWebView *webView = [[TBWKWebView alloc] initWithFrame:CGRectMake(webViewX, webViewY, webViewW, webViewH) andHtmlPath:self.htmlPath andViewController:tempViewController];
+    webView.delegate = self;
+    
+    [self.view addSubview:webView];
+}
+
+#pragma mark - dealloc
+-(void)dealloc {
+    TBDeallocMark(...);
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+
+#pragma mark - TBWKWebViewDelegate 方法
+// 拦截URL
+-(void)webViewDecidePolicyForNavigationAction:(NSString *)absoluteString decisionHandler:(void (^) (BOOL isAllow))decisionHandler {
+    
+}
+
+// 开始加载
+-(void)webViewDidStartLoad:(WKWebView *)webView {
+    
+}
+
+// 完成加载
+-(void)webViewDidFinishLoad:(WKWebView *)webView {
+    [webView evaluateJavaScript:@"document.title" completionHandler:^(id _Nullable obj, NSError * _Nullable error) {
+        NSString *title = [NSString stringWithFormat:@"%@",obj];
+        if (self.isShowNaviBar) {
+            self.navigationItem.title = title;
+        } else {
+            self.navigationItem.title = @"";
+        }
+        
+    }];
+}
+
+// 加载失败
+-(void)webViewDidFailLoad:(WKWebView *)webView {
+    
+}
+
+@end

@@ -1,0 +1,424 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		181186102174878E0066FDD5 /* TBExceptionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 181186042174878E0066FDD5 /* TBExceptionManager.m */; };
+		181186112174878E0066FDD5 /* TBInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 181186052174878E0066FDD5 /* TBInfo.m */; };
+		181186122174878E0066FDD5 /* TBErrorModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 181186072174878E0066FDD5 /* TBErrorModel.m */; };
+		181186132174878E0066FDD5 /* TBAppConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 1811860C2174878E0066FDD5 /* TBAppConfig.m */; };
+		181186142174878E0066FDD5 /* TBBusinessClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 1811860D2174878E0066FDD5 /* TBBusinessClient.m */; };
+		181186152174878E0066FDD5 /* TBSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 1811860E2174878E0066FDD5 /* TBSession.m */; };
+		18118617217487E70066FDD5 /* TBExceptionManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 181186032174878E0066FDD5 /* TBExceptionManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		18118618217487F00066FDD5 /* TBInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 181186022174878E0066FDD5 /* TBInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		18118619217488070066FDD5 /* TBHeader.h in Headers */ = {isa = PBXBuildFile; fileRef = 181186002174878E0066FDD5 /* TBHeader.h */; };
+		1811861A217488070066FDD5 /* TBAppConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 181186082174878E0066FDD5 /* TBAppConfig.h */; };
+		1811861B217488070066FDD5 /* TBBusinessClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 1811860A2174878E0066FDD5 /* TBBusinessClient.h */; };
+		1811861C217488070066FDD5 /* TBErrorModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 1811860B2174878E0066FDD5 /* TBErrorModel.h */; };
+		1811861D217488070066FDD5 /* TBSession.h in Headers */ = {isa = PBXBuildFile; fileRef = 181186092174878E0066FDD5 /* TBSession.h */; };
+		D50E446A2191850500DAC895 /* TBPerformanceMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = D50E44682191850500DAC895 /* TBPerformanceMonitor.m */; };
+		D50E446B2191850500DAC895 /* TBPerformanceMonitor.h in Headers */ = {isa = PBXBuildFile; fileRef = D50E44692191850500DAC895 /* TBPerformanceMonitor.h */; };
+		D50E4470219187DC00DAC895 /* CrashReporter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D50E446C2191854C00DAC895 /* CrashReporter.framework */; };
+		D5EFACFD2186B82100331394 /* 实时监控接口.doc in Resources */ = {isa = PBXBuildFile; fileRef = D5EFACFC2186B82100331394 /* 实时监控接口.doc */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		181185D4217486710066FDD5 /* TBCatchException.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TBCatchException.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		181185D7217486710066FDD5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		181186002174878E0066FDD5 /* TBHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBHeader.h; sourceTree = "<group>"; };
+		181186022174878E0066FDD5 /* TBInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBInfo.h; sourceTree = "<group>"; };
+		181186032174878E0066FDD5 /* TBExceptionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBExceptionManager.h; sourceTree = "<group>"; };
+		181186042174878E0066FDD5 /* TBExceptionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBExceptionManager.m; sourceTree = "<group>"; };
+		181186052174878E0066FDD5 /* TBInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBInfo.m; sourceTree = "<group>"; };
+		181186072174878E0066FDD5 /* TBErrorModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBErrorModel.m; sourceTree = "<group>"; };
+		181186082174878E0066FDD5 /* TBAppConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBAppConfig.h; sourceTree = "<group>"; };
+		181186092174878E0066FDD5 /* TBSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBSession.h; sourceTree = "<group>"; };
+		1811860A2174878E0066FDD5 /* TBBusinessClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBBusinessClient.h; sourceTree = "<group>"; };
+		1811860B2174878E0066FDD5 /* TBErrorModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBErrorModel.h; sourceTree = "<group>"; };
+		1811860C2174878E0066FDD5 /* TBAppConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBAppConfig.m; sourceTree = "<group>"; };
+		1811860D2174878E0066FDD5 /* TBBusinessClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBBusinessClient.m; sourceTree = "<group>"; };
+		1811860E2174878E0066FDD5 /* TBSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBSession.m; sourceTree = "<group>"; };
+		D50E44682191850500DAC895 /* TBPerformanceMonitor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBPerformanceMonitor.m; sourceTree = "<group>"; };
+		D50E44692191850500DAC895 /* TBPerformanceMonitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBPerformanceMonitor.h; sourceTree = "<group>"; };
+		D50E446C2191854C00DAC895 /* CrashReporter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CrashReporter.framework; sourceTree = "<group>"; };
+		D5EFACFC2186B82100331394 /* 实时监控接口.doc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "实时监控接口.doc"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		181185D1217486710066FDD5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D50E4470219187DC00DAC895 /* CrashReporter.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		181185CB217486710066FDD5 = {
+			isa = PBXGroup;
+			children = (
+				181185D6217486710066FDD5 /* TBCatchException */,
+				181185D5217486710066FDD5 /* Products */,
+				D50E446F219187DC00DAC895 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		181185D5217486710066FDD5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				181185D4217486710066FDD5 /* TBCatchException.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		181185D6217486710066FDD5 /* TBCatchException */ = {
+			isa = PBXGroup;
+			children = (
+				181185D7217486710066FDD5 /* Info.plist */,
+				181185FF2174878E0066FDD5 /* TBException */,
+				181186062174878E0066FDD5 /* TBNetworking */,
+			);
+			path = TBCatchException;
+			sourceTree = "<group>";
+		};
+		181185FF2174878E0066FDD5 /* TBException */ = {
+			isa = PBXGroup;
+			children = (
+				D5EFACFC2186B82100331394 /* 实时监控接口.doc */,
+				181186002174878E0066FDD5 /* TBHeader.h */,
+				181186022174878E0066FDD5 /* TBInfo.h */,
+				181186052174878E0066FDD5 /* TBInfo.m */,
+				181186032174878E0066FDD5 /* TBExceptionManager.h */,
+				181186042174878E0066FDD5 /* TBExceptionManager.m */,
+				D50E446E219186B500DAC895 /* 卡顿监测 */,
+			);
+			path = TBException;
+			sourceTree = "<group>";
+		};
+		181186062174878E0066FDD5 /* TBNetworking */ = {
+			isa = PBXGroup;
+			children = (
+				181186082174878E0066FDD5 /* TBAppConfig.h */,
+				1811860C2174878E0066FDD5 /* TBAppConfig.m */,
+				1811860A2174878E0066FDD5 /* TBBusinessClient.h */,
+				1811860D2174878E0066FDD5 /* TBBusinessClient.m */,
+				1811860B2174878E0066FDD5 /* TBErrorModel.h */,
+				181186072174878E0066FDD5 /* TBErrorModel.m */,
+				181186092174878E0066FDD5 /* TBSession.h */,
+				1811860E2174878E0066FDD5 /* TBSession.m */,
+			);
+			path = TBNetworking;
+			sourceTree = "<group>";
+		};
+		D50E446E219186B500DAC895 /* 卡顿监测 */ = {
+			isa = PBXGroup;
+			children = (
+				D50E446C2191854C00DAC895 /* CrashReporter.framework */,
+				D50E44692191850500DAC895 /* TBPerformanceMonitor.h */,
+				D50E44682191850500DAC895 /* TBPerformanceMonitor.m */,
+			);
+			path = "卡顿监测";
+			sourceTree = "<group>";
+		};
+		D50E446F219187DC00DAC895 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		18118616217487E30066FDD5 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1811861D217488070066FDD5 /* TBSession.h in Headers */,
+				1811861A217488070066FDD5 /* TBAppConfig.h in Headers */,
+				18118618217487F00066FDD5 /* TBInfo.h in Headers */,
+				1811861B217488070066FDD5 /* TBBusinessClient.h in Headers */,
+				D50E446B2191850500DAC895 /* TBPerformanceMonitor.h in Headers */,
+				18118617217487E70066FDD5 /* TBExceptionManager.h in Headers */,
+				18118619217488070066FDD5 /* TBHeader.h in Headers */,
+				1811861C217488070066FDD5 /* TBErrorModel.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		181185D3217486710066FDD5 /* TBCatchException */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 181185DA217486710066FDD5 /* Build configuration list for PBXNativeTarget "TBCatchException" */;
+			buildPhases = (
+				18118616217487E30066FDD5 /* Headers */,
+				181185D0217486710066FDD5 /* Sources */,
+				181185D1217486710066FDD5 /* Frameworks */,
+				181185D2217486710066FDD5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TBCatchException;
+			productName = TBCatchException;
+			productReference = 181185D4217486710066FDD5 /* TBCatchException.framework */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		181185CC217486710066FDD5 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1000;
+				ORGANIZATIONNAME = Apple;
+				TargetAttributes = {
+					181185D3217486710066FDD5 = {
+						CreatedOnToolsVersion = 10.0;
+					};
+				};
+			};
+			buildConfigurationList = 181185CF217486710066FDD5 /* Build configuration list for PBXProject "TBCatchException" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 181185CB217486710066FDD5;
+			productRefGroup = 181185D5217486710066FDD5 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				181185D3217486710066FDD5 /* TBCatchException */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		181185D2217486710066FDD5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D5EFACFD2186B82100331394 /* 实时监控接口.doc in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		181185D0217486710066FDD5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				181186152174878E0066FDD5 /* TBSession.m in Sources */,
+				D50E446A2191850500DAC895 /* TBPerformanceMonitor.m in Sources */,
+				181186122174878E0066FDD5 /* TBErrorModel.m in Sources */,
+				181186132174878E0066FDD5 /* TBAppConfig.m in Sources */,
+				181186142174878E0066FDD5 /* TBBusinessClient.m in Sources */,
+				181186102174878E0066FDD5 /* TBExceptionManager.m in Sources */,
+				181186112174878E0066FDD5 /* TBInfo.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		181185D8217486710066FDD5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		181185D9217486710066FDD5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		181185DB217486710066FDD5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = K95K83TRP8;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/TBCatchException/TBNetworking",
+					"$(PROJECT_DIR)/TBCatchException/TBException/卡顿监测",
+				);
+				INFOPLIST_FILE = TBCatchException/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MACH_O_TYPE = mh_object;
+				PRODUCT_BUNDLE_IDENTIFIER = chenrongye.TBCatchException;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				VALID_ARCHS = "arm64 armv7 armv7s i386 x86_64";
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Debug;
+		};
+		181185DC217486710066FDD5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = K95K83TRP8;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/TBCatchException/TBNetworking",
+					"$(PROJECT_DIR)/TBCatchException/TBException/卡顿监测",
+				);
+				INFOPLIST_FILE = TBCatchException/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MACH_O_TYPE = mh_object;
+				PRODUCT_BUNDLE_IDENTIFIER = chenrongye.TBCatchException;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				VALID_ARCHS = "arm64 armv7 armv7s i386 x86_64";
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		181185CF217486710066FDD5 /* Build configuration list for PBXProject "TBCatchException" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				181185D8217486710066FDD5 /* Debug */,
+				181185D9217486710066FDD5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		181185DA217486710066FDD5 /* Build configuration list for PBXNativeTarget "TBCatchException" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				181185DB217486710066FDD5 /* Debug */,
+				181185DC217486710066FDD5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 181185CC217486710066FDD5 /* Project object */;
+}

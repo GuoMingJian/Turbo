@@ -1,0 +1,169 @@
+//
+//  TBAuthentication.m
+//  TBBusiness
+//
+//  Created by Apple on 2018/10/23.
+//  Copyright © 2018年 Apple. All rights reserved.
+//
+
+#import "TBAuthentication.h"
+/**
+ *  iPhoneX系列机型宏定义
+ */
+#define iPhoneX ([UIApplication sharedApplication].statusBarFrame.size.height > 20)
+
+@implementation TBAuthentication
+
++(void)startRecognizeWithDescription:(NSString *)description callBack:(authenticationBlock)block {
+    LAContext *context = [[LAContext alloc] init];
+    context.localizedFallbackTitle = @"请输入密码";
+    NSError *error = nil;
+    
+    if ([context canEvaluatePolicy:(LAPolicyDeviceOwnerAuthentication) error:&error]) {
+        if (!description || ![description isKindOfClass:[NSString class]] || description.length == 0 ) {
+            if (iPhoneX) {
+                description = @"验证已有面容";
+            } else {
+                description = @"请将手指按在Home健上";
+            }
+        }
+        
+        [context evaluatePolicy:(LAPolicyDeviceOwnerAuthentication) localizedReason:description reply:^(BOOL success, NSError * _Nullable error) {
+            if (success) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    block(TBAuthenticationSuccess,error);
+                });
+            } else {
+                switch (error.code) {
+                    case LAErrorAuthenticationFailed:
+                    {
+                        // 身份验证未成功，因为用户无法提供有效凭据。
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            block(TBAuthenticationFailed,error);
+                        });
+                    }
+                        break;
+                    case LAErrorUserCancel:
+                    {
+                        // 用户取消了身份验证
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            block(TBErrorUserCancel,error);
+                        });
+                    }
+                        break;
+                    case LAErrorUserFallback:
+                    {
+                        // 验证已取消，因为用户点击了后备按钮(使用手机密码)
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            block(TBErrorUserFallback,error);
+                        });
+                    }
+                        break;
+                    case LAErrorSystemCancel:
+                    {
+                        // 身份验证已被系统取消
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            block(TBErrorSystemCancel,error);
+                        });
+                    }
+                        break;
+                    case LAErrorPasscodeNotSet:
+                    {
+                        // 身份验证无法启动，因为未在设备上设置密码。
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            block(TBErrorPasscodeNotSet,error);
+                        });
+                    }
+                        break;
+                    case LAErrorAppCancel:
+                    {
+                        // 应用程序取消了身份验证（例如，在调用时调用了invalidate身份验证正在进行中）
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            block(TBErrorAppCancel,error);
+                        });
+                    }
+                        break;
+                    case LAErrorInvalidContext:
+                    {
+                        // 传递给此调用的LAContext以前已失效
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            block(TBErrorInvalidContext,error);
+                        });
+                    }
+                        break;
+                    case -6:
+                    {
+                        // LAErrorBiometryNotAvailable = LAErrorTouchIDNotAvailable
+                        if (iPhoneX) {
+                            // iPhoneX系列枚举：LAErrorBiometryNotAvailable
+                            // 身份验证无法启动，因为设备上没有生物统计信息。
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                block(TBErrorBiometryNotAvailable,error);
+                            });
+                        } else {
+                            // 非iPhoneX系列枚举：LAErrorTouchIDNotAvailable
+                            // 身份验证无法启动，因为设备上没有Touch ID。
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                block(TBErrorTouchIDNotAvailable,error);
+                            });
+                        }
+                    }
+                        break;
+                    case -7:
+                    {
+                        // LAErrorBiometryNotEnrolled = LAErrorTouchIDNotEnrolled
+                        if (iPhoneX) {
+                            // iPhoneX系列枚举：LAErrorBiometryNotEnrolled
+                            // 身份验证无法启动，因为生物统计学没有注册身份。
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                block(TBErrorBiometryNotEnrolled,error);
+                            });
+                        } else {
+                            // 非iPhoneX系列枚举：LAErrorTouchIDNotEnrolled
+                            // 身份验证无法启动，因为Touch ID没有已注册的手指。
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                block(TBErrorTouchIDNotEnrolled,error);
+                            });
+                        }
+                    }
+                        break;
+                    case -8:
+                    {
+                        // LAErrorBiometryLockout = LAErrorTouchIDLockout
+                        if (iPhoneX) {
+                            // iPhoneX系列枚举：LAErrorBiometryLockout
+                            // 生物测定现已锁定。需要密码来解锁生物测定
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                block(TBErrorBiometryLockout,error);
+                            });
+                        } else {
+                            // 非iPhoneX系列枚举：LAErrorTouchIDLockout
+                            // Touch ID现已锁定。需要密码才能解锁Touch ID
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                block(TBErrorTouchIDLockout,error);
+                            });
+                        }
+                    }
+                        break;
+                    case LAErrorNotInteractive:
+                    {
+                        // 身份验证失败，因为它需要显示已被禁止的UI(代码设置了禁止)
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            block(TBErrorNotInteractive,error);
+                        });
+                    }
+                        break;
+                        
+                    default:
+                        break;
+                }
+            }
+        }];
+    } else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            block(TBAuthenticationNotValid,error);
+        });
+    }
+}
+
+@end

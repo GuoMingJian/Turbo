@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ResultViewController">
+            <connections>
+                <outlet property="nextBtn" destination="7jl-E1-2EP" id="pQY-tR-kyO"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="viewTopConstraint" destination="Rqa-VZ-koJ" id="Ju4-P0-Vv3"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ytK-QW-AJ3">
+                    <rect key="frame" x="0.0" y="64" width="375" height="210"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="successIcon" translatesAutoresizingMaskIntoConstraints="NO" id="LiM-vy-YvF">
+                            <rect key="frame" x="150" y="29" width="75" height="75"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="75" id="UJV-YN-P9h"/>
+                                <constraint firstAttribute="height" constant="75" id="djb-Ia-j5k"/>
+                                <constraint firstAttribute="width" secondItem="LiM-vy-YvF" secondAttribute="height" multiplier="1:1" id="wo5-eY-1iw"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="您的银行已添加成功" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nsr-Xm-ENa">
+                            <rect key="frame" x="132.5" y="154" width="110.5" height="14.5"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <color key="textColor" red="0.60784313729999995" green="0.60784313729999995" blue="0.60784313729999995" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="注册成功" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="liI-N0-uJr">
+                            <rect key="frame" x="142.5" y="119" width="90" height="27"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                            <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="210" id="3JT-Zd-3kD"/>
+                        <constraint firstItem="liI-N0-uJr" firstAttribute="centerX" secondItem="ytK-QW-AJ3" secondAttribute="centerX" id="4pb-yh-IGq"/>
+                        <constraint firstItem="nsr-Xm-ENa" firstAttribute="centerX" secondItem="ytK-QW-AJ3" secondAttribute="centerX" id="GRl-YP-EN8"/>
+                        <constraint firstItem="LiM-vy-YvF" firstAttribute="top" secondItem="ytK-QW-AJ3" secondAttribute="top" constant="29" id="WdU-rN-K1P"/>
+                        <constraint firstItem="LiM-vy-YvF" firstAttribute="centerX" secondItem="ytK-QW-AJ3" secondAttribute="centerX" id="ZtS-Ab-ACj"/>
+                        <constraint firstItem="liI-N0-uJr" firstAttribute="top" secondItem="LiM-vy-YvF" secondAttribute="bottom" constant="15" id="dwv-VC-sm7"/>
+                        <constraint firstItem="nsr-Xm-ENa" firstAttribute="top" secondItem="liI-N0-uJr" secondAttribute="bottom" constant="8" id="j32-Pb-T6H"/>
+                    </constraints>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7jl-E1-2EP">
+                    <rect key="frame" x="20" y="582" width="335" height="45"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="45" id="WZQ-MT-6KQ"/>
+                    </constraints>
+                    <state key="normal" title="提交" backgroundImage="login"/>
+                    <connections>
+                        <action selector="nextBtnClick:" destination="-1" eventType="touchUpInside" id="Da0-eq-8Ck"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="0.94117647059999998" green="0.94117647059999998" blue="0.94117647059999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="7jl-E1-2EP" secondAttribute="bottom" constant="40" id="2c0-dF-UmV"/>
+                <constraint firstItem="ytK-QW-AJ3" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="7Z8-gH-bSY"/>
+                <constraint firstItem="ytK-QW-AJ3" firstAttribute="trailing" secondItem="i5M-Pr-FkT" secondAttribute="trailing" id="CP6-Fu-AM9"/>
+                <constraint firstItem="ytK-QW-AJ3" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="64" id="Rqa-VZ-koJ"/>
+                <constraint firstItem="7jl-E1-2EP" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="hJD-je-tG9"/>
+                <constraint firstAttribute="trailing" secondItem="7jl-E1-2EP" secondAttribute="trailing" constant="20" id="o8m-u6-vzA"/>
+            </constraints>
+        </view>
+    </objects>
+    <resources>
+        <image name="login" width="148" height="22.5"/>
+        <image name="successIcon" width="37.5" height="37.5"/>
+    </resources>
+</document>

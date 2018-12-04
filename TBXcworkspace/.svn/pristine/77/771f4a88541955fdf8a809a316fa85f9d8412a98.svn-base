@@ -1,0 +1,3 @@
+source "https://git.cloud.tencent.com/qcloud_u/cocopoads-repo"
+source "https://github.com/CocoaPods/Specs"
+pod 'TACMessaging'

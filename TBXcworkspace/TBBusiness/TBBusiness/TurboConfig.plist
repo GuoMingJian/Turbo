@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Debug</key>
+	<dict>
+		<key>Base_server_url</key>
+		<string>http://139.199.158.23:5555</string>
+		<key>Handshake_interface</key>
+		<string>handshake</string>
+		<key>SM2_PublicKey</key>
+		<string>043DA8FDB48E7A9A2EFFC7EFA1B672370B92A8266D15543B028355B439B527B2F32BDB96397ED817EFEEE317696959B0672238C63A5C4C3A63E657B115705D32FA</string>
+		<key>Type</key>
+		<string>Debug</string>
+		<key>description</key>
+		<string>配置测试环境的服务器地址、握手接口、SM2公钥（key名不允许修改！！）</string>
+	</dict>
+	<key>Release</key>
+	<dict>
+		<key>Base_server_url</key>
+		<string>http://139.199.158.23:5555</string>
+		<key>Handshake_interface</key>
+		<string>handshake</string>
+		<key>SM2_PublicKey</key>
+		<string>043DA8FDB48E7A9A2EFFC7EFA1B672370B92A8266D15543B028355B439B527B2F32BDB96397ED817EFEEE317696959B0672238C63A5C4C3A63E657B115705D32FA</string>
+		<key>Type</key>
+		<string>Release</string>
+		<key>description</key>
+		<string>配置生产环境的服务器地址、握手接口、SM2公钥（key名不允许修改！！）</string>
+	</dict>
+</dict>
+</plist>

@@ -1,0 +1,6 @@
+framework module Turbo {
+  umbrella header "Turbo.h"
+
+  export *
+  module * { export * }
+}

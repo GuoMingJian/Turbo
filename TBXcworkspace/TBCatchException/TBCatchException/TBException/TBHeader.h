@@ -1,0 +1,29 @@
+//
+//  TBHeader.h
+//  TBExceptionFramework
+//
+//  Created by 郭明健 on 2018/8/27.
+//  Copyright © 2018年 GuoMingJian. All rights reserved.
+//
+
+#ifndef TBHeader_h
+#define TBHeader_h
+
+#ifdef __OBJC__
+
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+
+#import "TBAppConfig.h"
+#import "TBSession.h"
+#import "TBBusinessClient.h"
+#import "TBInfo.h"
+#import "TBErrorModel.h"
+#import "TBExceptionManager.h"
+#import "TBPerformanceMonitor.h"
+
+#endif
+
+#define API_Online 1 //是否为线上环境 1：是  0：否
+
+#endif

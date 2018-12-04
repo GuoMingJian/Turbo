@@ -1,0 +1,15 @@
+{
+	"version": "2.0",
+	"module": [{
+		"versionList": [{
+			"version": "1.0.0",
+			"url": "http://139.199.158.23/operate/release/offLineModuleDownload?id=ebf4fec5-750a-498e-b44f-a154b8b0e144"
+		}],
+		"moduleId": "0001",
+		"moduleName": "common",
+		"newModule": {
+			"version": "1.0.0",
+			"url": "http://139.199.158.23/operate/release/offLineModuleDownload?id=a2482dbc-df7c-4524-8f9b-61520b449fc2"
+		}
+	}]
+}

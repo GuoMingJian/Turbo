@@ -1,0 +1,451 @@
+//
+//  TBExceptionManager.m
+//  TBExceptionFramework
+//
+//  Created by 郭明健 on 2018/8/24.
+//  Copyright © 2018年 GuoMingJian. All rights reserved.
+//
+
+#import "TBExceptionManager.h"
+#import "TBInfo.h"
+#import "TBErrorModel.h"
+#import "TBBusinessClient.h"
+
+#define kClassName @"TBExceptionManager"
+#define kTBExceptionManager_StartTime @"kTBExceptionManager_StartTime"
+#define kTBExceptionManager_isCloseLog @"kTBExceptionManager_isCloseLog"
+
+@interface TBExceptionManager()
+
+@property (nonatomic, assign) BOOL dismissed;
+
+@end
+
+@implementation TBExceptionManager
+
++ (instancetype)allocWithZone:(struct _NSZone *)zone
+{
+    static TBExceptionManager *manager = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        if (manager == nil) {
+            manager = [super allocWithZone:zone];
+        }
+    });
+    return manager;
+}
+
++ (instancetype)shareInstance
+{
+    return [[TBExceptionManager alloc] init];
+}
+
+// 主动向后台发送错误数据
+- (void)sendErrorInfoToBackground:(NSDictionary *)errorInfoDict {
+    [self handleException:errorInfoDict];
+}
+
+/**
+ 上传设备信息
+ */
+- (void)uploadDeviceMessageComplete:(void(^)(id result, NSError *error))complete;
+{
+    NSDictionary *param = [self getDeviceParam];
+    //NSLog(@"%@", param);
+    [[TBBusinessClient shareInstance] getDeviceMessageWithParam:param complete:^(id result, NSError *error) {
+        complete(result, error);
+    }];
+}
+
+- (NSDictionary *)getDeviceParam
+{
+    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+    dict[@"appCode"] = self.appCode;//APP编号（运营系统中的唯一APPcode）
+    NSString *appVersion = [NSString stringWithFormat:@"%@(%@)", [TBInfo appVersion], [TBInfo appBuild]];
+    dict[@"appVersion"] = appVersion;//APP版本（不带V）
+    dict[@"deviceId"] = [TBInfo iPhoneUUID];//设备ID
+    dict[@"deviceType"] = @"1";//1:手机  2:平板
+    dict[@"ip"] = [TBInfo iPhoneIpAddresses];//ip
+    dict[@"macAddress"] = self.macAddress;//手机物理地址
+    dict[@"mobilelModel"] = [TBInfo iPhoneModel];//手机型号
+    NSString *systemVersion = [[UIDevice currentDevice] systemVersion];
+    dict[@"modelVersion"] = systemVersion;
+    dict[@"systemType"] = @"0";//0:iOS  1:安卓
+    dict[@"systemVersion"] = [TBInfo iPhoneSystemVersion];//手机系统版本
+    
+    //
+    NSMutableDictionary *param = [NSMutableDictionary dictionary];
+    param[@"data"] = dict;
+    //
+    NSInteger stamp = [TBErrorModel stampByDate:[NSDate date]];
+    param[@"head"] = @{@"timestamp" : @(stamp)};
+    //
+    return param;
+}
+
+//1.3. 获取设备信息接口
+//POST http://139.199.158.23:83/operate/monitor/getDeviceMessage
+//参数
+/*
+ {
+ "data": {
+ "appCode": "mbank",
+ "appVersion": "1.0",
+ "deviceId": "865277034067254",
+ "deviceType": "1",
+ "ip": "192.168.1.105",
+ "macAddress": "EC:F3:42:C6:FC:F3",
+ "mobilelModel": "OPPO A59s",
+ "modelVersion": "A59s_11_A.14_180814",
+ "systemType": "1",
+ "systemVersion": "5.1"
+ },
+ "head": {
+ "timestamp": "20181029103733"
+ }
+ }
+ */
+
+//结果
+/*
+ {"head":{"timestamp":"20181029103734"},"data":null,"result":{"code":"000000","message":"成功"}}
+ */
+
+#pragma mark - setup TBExceptionManager
+
+/**
+ 启动异常搜集
+ */
+- (void)startCollectCrashLogs
+{
+    [self configuration];
+    
+    // 先检测沙箱是否保存有崩溃日志，如果有，先上传
+    [self checkSandBoxErrorInfo];
+    
+    NSSetUncaughtExceptionHandler(&catchExceptionHandler);
+}
+
+void catchExceptionHandler(NSException *exception)
+{
+    [[TBExceptionManager shareInstance] performSelectorOnMainThread:@selector(handleException:) withObject:exception waitUntilDone:YES];
+}
+
+- (void)handleException:(id)obj
+{
+    NSMutableDictionary *errorInfo = nil;
+    TBErrorModel *model = [TBErrorModel getModel];
+    // 将外部数据传入model
+    if (self.appCode) {
+        model.appCode = self.appCode;
+    }
+    if (self.macAddress) {
+        model.macAddress = self.macAddress;
+    }
+    
+    if ([obj isKindOfClass:([NSException class])]) {
+        /**
+         *  如果为NSException类型，表示原生发生崩溃
+         */
+        NSException *exception = (NSException *)obj;
+        
+        model.errorMessage = [NSString stringWithFormat:@"%@",exception.callStackSymbols];
+        model.errorCode = exception.reason;
+        errorInfo = [TBErrorModel getClientErrorParam:model];
+    } else if ([obj isKindOfClass:[NSDictionary class]]) {
+        
+        //JS补全数据
+        model.errorType = 3;
+        model.classify = @"H5";
+        model.stack = @"";
+        model.h5Url = @"";
+        
+        /**
+         *  如果为NSDictionary类型，表示主动向后台发送数据；
+         *  目前用于JS异常监控；
+         */
+        errorInfo = [TBErrorModel getClientErrorParam:model];
+        
+        // 重新组装数据
+        NSDictionary *newDict = (NSDictionary *)obj;
+        if (newDict.count > 0) {
+            NSDictionary *tempDict = [errorInfo objectForKey:@"data"];
+            NSMutableDictionary *mutDict = [NSMutableDictionary dictionaryWithDictionary:tempDict];
+            [mutDict addEntriesFromDictionary:newDict];
+            [errorInfo setObject:mutDict forKey:@"data"];
+        }
+    } else if ([obj isKindOfClass:[NSData class]]) {
+        /**
+         *  如果为NData类型，表示因上一次异常信息没有上送到后台而保存在沙箱的数据
+         *  APP重新的时候启动上传操作
+         */
+        NSData *tempData = (NSData *)obj;
+        errorInfo = [NSJSONSerialization JSONObjectWithData:tempData options:NSJSONReadingAllowFragments error:nil];
+    }
+    
+    /**
+     *  先保存异常数据，如果能及时上送到后台则删除，否则下次启动APP时重新上传
+     */
+    [self saveErrorInfo:errorInfo];
+    
+    /**
+     *  开始上送异常数据
+     */
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        [[TBBusinessClient shareInstance] uploadClientErrorWithParam:errorInfo complete:^(id result, NSError *error) {
+            NSLog(@"异常监控接口响应结果：%@", result);
+            [self deleteErrorInfo];
+            self.dismissed = YES;
+        }];
+    });
+    
+    // 确保接口上传完成
+    CFRunLoopRef runLoop = CFRunLoopGetCurrent();
+    CFArrayRef allModes = CFRunLoopCopyAllModes(runLoop);
+    while (!_dismissed)
+    {
+        for (NSString *mode in (__bridge NSArray *)allModes)
+        {
+            CFRunLoopRunInMode((CFStringRef)mode, 0.001, false);
+        }
+    }
+    CFRelease(allModes);
+    
+    if ([obj isKindOfClass:([NSException class])]) {
+        NSException *exception = (NSException *)obj;
+        [exception raise];
+    }
+}
+
+/**
+ 是否关闭日志打印，默认开启。
+ */
+- (void)setLogOFF:(BOOL)isOFF
+{
+    [TBExceptionManager setUserDefault:isOFF ? @"YES" : @"NO" key:kTBExceptionManager_isCloseLog];
+}
+
+#pragma mark -
+- (NSString *)getErrorInfoPath {
+    return [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/errorInfo.log"];
+}
+
+- (BOOL)saveErrorInfo:(NSDictionary *)errorInfo {
+    NSString *path = [self getErrorInfoPath];
+    if (path) {
+        NSData *errorInfoData = [NSJSONSerialization dataWithJSONObject:errorInfo options:(NSJSONWritingPrettyPrinted) error:nil];
+        if (errorInfoData && errorInfoData.length > 0) {
+            if (![errorInfoData writeToFile:path atomically:YES]) {
+                return NO;
+            }
+        }
+    }
+    return YES;
+}
+
+- (NSData *)getErrorInfo {
+    NSString *path = [self getErrorInfoPath];
+    NSData *errorData;
+    if (path) {
+        errorData = [NSData dataWithContentsOfFile:path];
+    }
+    return errorData;
+}
+
+- (BOOL)deleteErrorInfo {
+    NSString *path = [self getErrorInfoPath];
+    if (path) {
+        if (![[NSFileManager defaultManager] removeItemAtPath:path error:nil]) {
+            return NO;
+        }
+    }
+    return YES;
+}
+
+#pragma mark - 检查沙箱的错误日志
+- (void)checkSandBoxErrorInfo {
+    NSData *data = [self getErrorInfo];
+    if (data && data.length > 0) {
+        // 如果有，启动上传
+        [self handleException:data];
+    }
+}
+
+#pragma mark - private Methods
+
+- (void)configuration
+{
+    NSString *startTime = [TBExceptionManager currentTime];
+    [TBExceptionManager setUserDefault:startTime key:kTBExceptionManager_StartTime];
+    
+    if ([TBExceptionManager isLogs])
+    {
+        [TBExceptionManager setUserDefault:@"NO" key:kTBExceptionManager_isCloseLog];
+    }
+}
+
+- (NSString *)getErrorInfo:(NSException *)exception
+{
+    NSMutableString *crashLogs = [NSMutableString string];
+    NSString *name = [NSString stringWithFormat:@"[%@]崩溃日志", kClassName];
+    [crashLogs appendFormat:@"\n\n--------------------------------%@--------------------------------", name];
+    
+    //APP启动时间
+    NSString *startTime = [NSString stringWithFormat:@"启动时间:%@", [TBExceptionManager getUserDefault:kTBExceptionManager_StartTime]];
+    [crashLogs appendFormat:@"\n%@", startTime];
+    
+    //崩溃时间
+    NSString *crashTimeString = [NSString stringWithFormat:@"崩溃时间:%@", [TBExceptionManager currentTime]];
+    [crashLogs appendFormat:@"\n%@", crashTimeString];
+    
+    //APP 名称
+    NSString *appName = [NSString stringWithFormat:@"程序名:%@", [TBInfo appName]];
+    [crashLogs appendFormat:@"\n%@", appName];
+    
+    //程序版本
+    NSString *appVersion = [NSString stringWithFormat:@"程序版本:%@(%@)", [TBInfo appVersion], [TBInfo appBuild]];
+    [crashLogs appendFormat:@"\n%@", appVersion];
+    
+    //机型
+    NSString *iPhoneModel = [NSString stringWithFormat:@"机型:%@", [TBInfo iPhoneModel]];
+    [crashLogs appendFormat:@"\n%@", iPhoneModel];
+    
+    //系统版本
+    NSString *iPhoneSystemVersion = [NSString stringWithFormat:@"系统:%@", [TBInfo iPhoneSystemVersion]];
+    [crashLogs appendFormat:@"\n%@", iPhoneSystemVersion];
+    
+    //是否越狱
+    if ([TBInfo isJailBreak])
+    {
+        [crashLogs appendFormat:@"\n是否越狱:%@", @"YES"];
+    }
+    else
+    {
+        [crashLogs appendFormat:@"\n是否越狱:%@", @"NO"];
+    }
+    
+    //当前联网方式
+    NSString *iPhoneNetworkState = [NSString stringWithFormat:@"网络:%@", [TBInfo iPhoneNetworkState]];
+    [crashLogs appendFormat:@"\n%@", iPhoneNetworkState];
+    
+    //ip地址
+    NSString *iPhoneIpAddresses = [NSString stringWithFormat:@"ip地址:%@", [TBInfo iPhoneIpAddresses]];
+    [crashLogs appendFormat:@"\n%@", iPhoneIpAddresses];
+    
+    //
+    [crashLogs appendFormat:@"\n%@\n", @"---------------------崩溃堆栈---------------------"];
+    
+    NSString *crashInfo = [self getCrashInfo:exception];
+    [crashLogs appendString:crashInfo];
+    
+    //保存崩溃截图
+    //NSData *data = [TBExceptionManager getScreenShotImageData];
+    //UIImage *image = [UIImage imageWithData:data];
+    //NSLog(@"%@", image);
+    
+    //生成崩溃日志名
+    
+    //保存崩溃日志
+    
+    //修改崩溃日志记录
+    
+    //把异常崩溃信息发送至开发者邮件
+    //    NSMutableString *mailUrl = [NSMutableString string];
+    //    [mailUrl appendString:@"1339601489@qq.com"];
+    //    [mailUrl appendString:@"?subject=程序异常崩溃，请配合发送异常报告，谢谢合作！"];
+    //    [mailUrl appendFormat:@"&body=%@", crashLogs];
+    //     打开地址
+    //    NSString *mailPath = [mailUrl stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet characterSetWithCharactersInString:@"`#%^{}\"[]|\\<> "]];
+    //    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:mailPath]];
+    
+    [crashLogs appendFormat:@"--------------------------------End--------------------------------"];
+    
+    return crashLogs;
+}
+
+- (NSString *)getCrashInfo:(NSException *)exception
+{
+    NSMutableString *crashInfo = [NSMutableString string];
+    
+    //异常名
+    NSString *exceptionName = [NSString stringWithFormat:@"异常名:%@", exception.name];
+    [crashInfo appendFormat:@"%@", exceptionName];
+    
+    //异常理由
+    NSString *exceptionReason = [NSString stringWithFormat:@"异常理由:%@", exception.reason];
+    [crashInfo appendFormat:@"\n%@", exceptionReason];
+    
+    //异常额外信息
+    if (exception.userInfo)
+    {
+        NSString *exceptionUserInfo = [NSString stringWithFormat:@"异常额外信息:%@", exception.userInfo];
+        [crashInfo appendFormat:@"\n%@", exceptionUserInfo];
+    }
+    
+    //函数调用栈
+    NSString *exceptionCallStack = [NSString stringWithFormat:@"函数调用栈:%@", exception.callStackSymbols];
+    [crashInfo appendFormat:@"\n%@\n", exceptionCallStack];
+    
+    return crashInfo;
+}
+
++ (BOOL)isLogs
+{
+    NSString *isCloseLog = [TBExceptionManager getUserDefault:kTBExceptionManager_isCloseLog];
+    if ([isCloseLog isEqualToString:@"YES"])
+    {
+        return NO;
+    }
+    return YES;
+}
+
+/**
+ 获取当前时间
+ */
++ (NSString *)currentTime
+{
+    NSString *str = @"yyyy-MM-dd HH:mm:ss";
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:str];
+    NSString *dateString = [formatter stringFromDate:[NSDate date]];
+    return dateString;
+}
+
+/**
+ 获取屏幕截图
+ */
++ (NSData *)getScreenShotImageData
+{
+    UIGraphicsBeginImageContextWithOptions([UIApplication sharedApplication].keyWindow.bounds.size, NO, 1.0);
+    [[UIApplication sharedApplication].keyWindow.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return UIImageJPEGRepresentation(image, 1.0);
+}
+
+/**
+ 插入数据
+ */
++ (void)setUserDefault:(NSString *)value
+                   key:(NSString *)key
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setObject:value forKey:key];
+    [userDefaults synchronize];
+}
+
+/**
+ 获取数据
+ */
++ (NSString *)getUserDefault:(NSString *)key
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *result = [userDefaults objectForKey:key];
+    if (!result)
+    {
+        result = @"";
+    }
+    return result;
+}
+
+@end
