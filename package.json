@@ -1,0 +1,22 @@
+{
+  "name": "zx_turbo",
+  "version": "1.0.0",
+  "description": "a web app system framework",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GuoMingJian/Turbo.git"
+  },
+  "keywords": [
+    "turbo"
+  ],
+  "author": "guomingjian",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/GuoMingJian/Turbo/issues"
+  },
+  "homepage": "https://github.com/GuoMingJian/Turbo#readme"
+}
